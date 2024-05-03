@@ -1,4 +1,4 @@
-name: client test
+name: Client test
 
 on:
   pull_request:
