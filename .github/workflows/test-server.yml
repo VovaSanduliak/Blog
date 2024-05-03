@@ -8,7 +8,7 @@ on:
       - 'server/**'
 
 jobs:
-  build-server:
+  Build-server:
     strategy:
       matrix:
         node-version: [20.x]
