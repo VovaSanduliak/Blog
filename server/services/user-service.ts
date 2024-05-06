@@ -13,15 +13,20 @@ const getUserById = async (id: string) => {
 };
 
 const createUser = async (user: IUser) => {
-  if (await userModel.findOne({ email: user.email }))
+  if ((await userModel.findOne({ email: user.email })) && user.email)
     throw new Error("User with this email already exists");
 
   return await userModel.create(user);
 };
 
 const updateUser = async (id: string, user: IUser) => {
-  await userModel.findByIdAndUpdate(id, user);
-  return user;
+  const updatedUser = await userModel.findByIdAndUpdate(id, user, {
+    new: true,
+  });
+
+  if (!updateUser) throw new Error("User not found");
+
+  return updatedUser;
 };
 
 const deleteUser = async (id: string) => {

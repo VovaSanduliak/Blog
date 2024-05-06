@@ -37,7 +37,10 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id;
-    const userForUpdate = req.body.userForUpdate;
+    const userForUpdate = req.body;
+
+    if (!userForUpdate) throw new Error("No user update data provided");
+
     const updatedUser = await userService.updateUser(id, userForUpdate);
 
     res.status(200).json(updatedUser);
@@ -49,10 +52,9 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id;
-    const deletedUser = userService.deleteUser(id);
+    const deletedUser = await userService.deleteUser(id);
 
     if (!deleteUser) throw new Error("User not found");
-
     res.status(200).json(deletedUser);
   } catch (err) {
     console.log(err);
