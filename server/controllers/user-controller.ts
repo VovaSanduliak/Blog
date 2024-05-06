@@ -6,7 +6,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     const users = await userService.getAllUsers();
     return res.status(200).json(users);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
@@ -16,7 +16,7 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
     const user = await userService.getUserById(id);
     return res.status(200).json(user);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
@@ -30,7 +30,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     const newUser = await userService.createUser(user);
     res.status(200).json(newUser);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
@@ -45,7 +45,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json(updatedUser);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
@@ -57,7 +57,7 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     if (!deleteUser) throw new Error("User not found");
     res.status(200).json(deletedUser);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 };
 
