@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import UserRole from "../types/enums/UserRole";
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -9,6 +10,11 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  role: {
+    type: String,
+    enum: Object.values(UserRole),
+    default: UserRole.Basic,
   },
   isActivated: {
     type: Boolean,
