@@ -71,9 +71,26 @@ const activate = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const refresh = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { refreshToken } = req.cookies;
+    const userData = await authService.refresh(refreshToken);
+
+    res.cookie("refreshToken", userData.refreshToken, {
+      maxAge: oneMonthInMiliseconds,
+      httpOnly: true,
+    });
+
+    return res.json(userData);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   registration,
   login,
   logout,
   activate,
+  refresh,
 };
