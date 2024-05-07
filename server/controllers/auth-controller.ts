@@ -58,8 +58,22 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const activate = async (req: Request, res: Response, next: NextFunction) => {
+  const CLIENT_URL = process.env.CLIENT_URL;
+  if (!CLIENT_URL) throw Error("CLIENT_URL environment variable is missing");
+
+  try {
+    const activationLink = req.params.link;
+    await authService.activate(activationLink);
+    return res.redirect(CLIENT_URL);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   registration,
   login,
   logout,
+  activate,
 };

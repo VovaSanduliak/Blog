@@ -97,6 +97,7 @@ const refresh = async (refreshToken: string) => {
 
 export default {
   registration,
+  activate,
   login,
   logout,
   refresh,
