@@ -55,8 +55,24 @@ const activate = async (activationLink: string) => {
   await user.save();
 };
 
-const login = async (email: string, password: string) => {};
-const logout = async (refreshToken: string) => {};
+const login = async (email: string, password: string) => {
+  const user = await userModel.findOne({ email });
+  if (!user) throw ApiError.BadRequest(`User with email ${email} not found`);
+
+  const isPasswordsEquals = await bcrypt.compare(password, user.password);
+  if (!isPasswordsEquals) throw ApiError.BadRequest("Incorrect password");
+
+  const userDto = new UserDto({ ...user, _id: user.id });
+  const tokens = tokenService.generateTokens({ ...userDto });
+
+  await tokenService.saveToken(userDto.id, tokens.refreshToken);
+  return { ...tokens, user: userDto };
+};
+
+const logout = async (refreshToken: string) => {
+  const token = await tokenService.removeToken(refreshToken);
+  return token;
+};
 
 const refresh = async (refreshToken: string) => {
   if (!refreshToken) throw ApiError.UnathorizedError();

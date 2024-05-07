@@ -31,6 +31,35 @@ const registration = async (
   }
 };
 
+const login = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email, password } = req.body;
+    const userData = await authService.login(email, password);
+
+    res.cookie("refreshToken", userData.refreshToken, {
+      maxAge: oneMonthInMiliseconds,
+      httpOnly: true,
+    });
+
+    return res.json(userData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { refreshToken } = req.cookies;
+    const token = await authService.logout(refreshToken);
+    res.clearCookie("refreshToken");
+    res.json(token);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   registration,
+  login,
+  logout,
 };
