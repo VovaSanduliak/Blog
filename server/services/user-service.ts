@@ -14,7 +14,7 @@ const getUserById = async (id: string) => {
 };
 
 const createUser = async (user: IUser) => {
-  if ((await userModel.findOne({ email: user.email })) && user.email)
+  if ((await userModel.exists({ email: user.email })) && user.email)
     throw ApiError.BadRequest("User with this email already exists");
 
   return await userModel.create(user);
@@ -37,10 +37,16 @@ const deleteUser = async (id: string) => {
   return user;
 };
 
+const isUserWithEmailExists = async (email: string) => {
+  if (await userModel.findOne({ email: email })) return true;
+  else return false;
+};
+
 export default {
   getAllUsers,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
+  isUserWithEmailExists,
 };
