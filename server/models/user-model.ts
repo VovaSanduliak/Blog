@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 import UserRole from "../types/enums/UserRole";
+import IUser from "../types/interfaces/IUser";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUser>({
   email: {
     type: String,
     required: true,
