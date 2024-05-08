@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 import UserRole from "../enums/UserRole";
 import IUser from "../interfaces/IUser";
 
-export default class UserDto {
+class UserDto {
   id: string;
   email: string;
   role: UserRole;
@@ -15,3 +15,5 @@ export default class UserDto {
     this.isActivated = user.isActivated || false;
   }
 }
+
+export default UserDto;

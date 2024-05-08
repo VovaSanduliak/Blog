@@ -1,10 +1,11 @@
-import { ErrorRequestHandler, Request, Response } from "express";
+import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import ApiError from "../exceptions/api-error";
 
 const errorMiddleware: ErrorRequestHandler = (
   err: Error,
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   if (err instanceof ApiError) {
     return res
