@@ -62,7 +62,7 @@ const login = async (email: string, password: string) => {
   const isPasswordsEquals = await bcrypt.compare(password, user.password);
   if (!isPasswordsEquals) throw ApiError.BadRequest("Incorrect password");
 
-  const userDto = new UserDto({ ...user, _id: user.id });
+  const userDto = new UserDto(user, user.id);
   const tokens = tokenService.generateTokens({ ...userDto });
 
   await tokenService.saveToken(userDto.id, tokens.refreshToken);
@@ -88,7 +88,7 @@ const refresh = async (refreshToken: string) => {
 
   if (!user) throw ApiError.BadRequest("user not found");
 
-  const userDto = new UserDto({ ...user, _id: user.id });
+  const userDto = new UserDto(user, user.id);
   const tokens = tokenService.generateTokens({ ...userDto });
 
   await tokenService.saveToken(userDto.id, tokens.refreshToken);
