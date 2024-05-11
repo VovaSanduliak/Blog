@@ -18,8 +18,8 @@ const registration = async (
       return next(ApiError.BadRequest("Validation error:", validationErrors));
     }
 
-    const { email, password } = req.body;
-    const userData = await authService.registration(email, password);
+    const { nickname, email, password } = req.body;
+    const userData = await authService.registration(nickname, email, password);
     res.cookie("refreshToken", userData.refreshToken, {
       maxAge: oneMonthInMiliseconds,
       httpOnly: true,

@@ -9,7 +9,11 @@ import userModel from "../models/user-model";
 import UserDto from "../types/dtos/UserDTO";
 import { JwtPayload } from "jsonwebtoken";
 
-const registration = async (email: string, password: string) => {
+const registration = async (
+  nickname: string,
+  email: string,
+  password: string
+) => {
   const userWithEmailExists = await userService.isUserWithEmailExists(email);
 
   if (userWithEmailExists)
@@ -19,6 +23,7 @@ const registration = async (email: string, password: string) => {
   const activationLink = uuidv4();
 
   const user = await userService.createUser({
+    nickname,
     email,
     password: hashPassword,
     activationLink,
