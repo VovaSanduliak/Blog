@@ -1,4 +1,3 @@
-import mongoose, { ObjectId } from "mongoose";
 import UserRole from "../enums/UserRole";
 
 interface IUser {
