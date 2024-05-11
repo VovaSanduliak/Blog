@@ -1,24 +1,27 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
-import "@mantine/core/styles.css";
-
-import LoginForm from "./forms/login-form";
+import { ModalsProvider } from "@mantine/modals";
 import AuthProvider from "./context/auth-context";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PrivateRoute from "./components/private-route";
-import Dashboard from "./components/dashboard";
+import AdminPage from "./pages/admin-page/admin-page";
+import Layout from "./components/layout/layout";
+import ProfilePage from "./pages/profile-page/profile-page";
+import "@mantine/core/styles.css";
 
 const App = () => {
   return (
     <BrowserRouter>
       <MantineProvider defaultColorScheme="light">
-        <AuthProvider>
-          <Routes>
-            <Route path="/login" element={<LoginForm />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/admin" element={<Dashboard />} />
-            </Route>
-          </Routes>
-        </AuthProvider>
+        <ModalsProvider>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Navigate to="/profile" />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="admin" element={<AdminPage />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </ModalsProvider>
       </MantineProvider>
     </BrowserRouter>
   );

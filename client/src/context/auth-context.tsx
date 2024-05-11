@@ -7,22 +7,22 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-interface IAuthContext {
-  token: string;
-  user: IUser | null;
-  login: (data: object) => void;
-  logout: () => void;
-}
-
-type loginData = {
+interface loginData {
   email: string;
   password: string;
-};
+}
+
+export interface IAuthContext {
+  user: IUser | null;
+  token: string;
+  login: (data: loginData) => Promise<void>;
+  logout: () => void;
+}
 
 export const AuthContext = createContext<IAuthContext>({
   token: "",
   user: null,
-  login: () => {},
+  login: async () => {},
   logout: () => {},
 });
 
@@ -32,6 +32,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
 
   const login = async (data: loginData) => {
+    console.log("login");
     try {
       console.log("response:");
       const response = await authService.login(data.email, data.password);
@@ -65,11 +66,9 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = { user, token, login, logout };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
