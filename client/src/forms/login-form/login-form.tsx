@@ -13,6 +13,7 @@ import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { IAuthContext } from "../../context/auth-context";
 import { FC } from "react";
+import RegistrationForm from "../registration-form/registration-form";
 
 type loginData = {
   email: string;
@@ -41,6 +42,13 @@ const LoginForm: FC<Props> = ({ auth }) => {
     modals.closeAll();
   };
 
+  const handleCreateAccount = () => {
+    modals.open({
+      children: <RegistrationForm />,
+      centered: true,
+    });
+  };
+
   return (
     <>
       <Title ta="center" className={classes.title}>
@@ -48,7 +56,7 @@ const LoginForm: FC<Props> = ({ auth }) => {
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Do not have an account yet?{" "}
-        <Anchor size="sm" component="button">
+        <Anchor onClick={handleCreateAccount} size="sm" component="button">
           Create account
         </Anchor>
       </Text>
