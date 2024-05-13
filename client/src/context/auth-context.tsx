@@ -44,7 +44,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         setToken(response.data.accessToken);
         console.log("TOKEN: ", token);
         localStorage.setItem("accessToken", response.data.accessToken);
-        navigate("/admin"); // TODO
+        navigate("/"); // TODO
         return;
       } else {
         throw new Error(response.statusText);
