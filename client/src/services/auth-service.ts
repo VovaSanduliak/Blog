@@ -10,10 +10,15 @@ const login = async (
 };
 
 const registration = async (
+  nickname: string,
   email: string,
   password: string
 ): Promise<AxiosResponse<IAuthResponse>> => {
-  return api.post<IAuthResponse>("/auth/registration", { email, password });
+  return api.post<IAuthResponse>("/auth/registration", {
+    nickname,
+    email,
+    password,
+  });
 };
 
 const logout = async (): Promise<void> => {
