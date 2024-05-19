@@ -2,20 +2,21 @@ import { BrowserRouter } from "react-router-dom";
 import { MantineProvider } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import AuthProvider from "./context/auth-context";
-import "@mantine/core/styles.css";
 import AppRouter from "./router/app-router";
+import "@mantine/core/styles.css";
+import "@mantine/tiptap/styles.css";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <MantineProvider defaultColorScheme="light">
+    <MantineProvider defaultColorScheme="light">
+      <BrowserRouter>
         <ModalsProvider>
           <AuthProvider>
             <AppRouter />
           </AuthProvider>
         </ModalsProvider>
-      </MantineProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </MantineProvider>
   );
 };
 

@@ -7,6 +7,7 @@ import {
   Text,
   Group,
   Button,
+  Loader,
 } from "@mantine/core";
 import classes from "./login-form.module.css";
 import { useForm } from "@mantine/form";
@@ -39,7 +40,9 @@ const LoginForm: FC<Props> = ({ auth }) => {
 
   const handleSubmit = async (loginData: loginData) => {
     auth.login(loginData);
-    modals.closeAll();
+    if (!auth.error) {
+      // modals.closeAll();
+    }
   };
 
   const handleCreateAccount = () => {
@@ -61,7 +64,11 @@ const LoginForm: FC<Props> = ({ auth }) => {
         </Anchor>
       </Text>
 
-      <form onSubmit={form.onSubmit((loginData) => handleSubmit(loginData))}>
+      <form
+        onSubmit={form.onSubmit((loginData: loginData) =>
+          handleSubmit(loginData)
+        )}
+      >
         <TextInput
           type="email"
           label="Email"
@@ -86,9 +93,10 @@ const LoginForm: FC<Props> = ({ auth }) => {
             Forgot password?
           </Anchor>
         </Group>
-        <Button type="submit" fullWidth mt="xl">
-          Sign in
+        <Button type="submit" fullWidth mt="xl" loading={auth.loading}>
+          {auth.loading ? <Loader size="sm" /> : "Sign in"}
         </Button>
+        {auth.error && <p>{auth.error}</p>}
       </form>
     </>
   );

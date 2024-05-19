@@ -10,9 +10,14 @@ import {
   rem,
 } from "@mantine/core";
 import { IconHeart, IconBookmark, IconShare } from "@tabler/icons-react";
-import classes from "./article-item.module.css";
+import classes from "./article.module.css";
+import IArticle from "../../models/IArticle";
 
-const ArticleItem: React.FC = () => {
+interface Props {
+  article: IArticle;
+}
+
+const ArticleItem: React.FC<Props> = ({ article }) => {
   const theme = useMantineTheme();
 
   return (

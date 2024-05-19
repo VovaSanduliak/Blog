@@ -17,6 +17,8 @@ export interface IAuthContext {
   token: string;
   login: (data: loginData) => Promise<void>;
   logout: () => void;
+  loading: boolean;
+  error: string | null;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -24,15 +26,20 @@ export const AuthContext = createContext<IAuthContext>({
   user: null,
   login: async () => {},
   logout: () => {},
+  loading: false,
+  error: null,
 });
 
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState(localStorage.getItem("accessToken") ?? "");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const login = async (data: loginData) => {
-    console.log("login");
+    setLoading(true);
+    setError(null);
     try {
       console.log("response:");
       const response = await authService.login(data.email, data.password);
@@ -44,13 +51,14 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         setToken(response.data.accessToken);
         console.log("TOKEN: ", token);
         localStorage.setItem("accessToken", response.data.accessToken);
-        navigate("/"); // TODO
-        return;
+        setLoading(false);
+        // navigate("/"); // TODO
       } else {
         throw new Error(response.statusText);
       }
     } catch (err) {
-      console.error("ERROooooR:", err); // TODO:
+      setError(err instanceof Error ? err.message : "Unknown error"); // Установка помилки
+      setLoading(false);
     }
   };
 
@@ -66,7 +74,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const value = { user, token, login, logout };
+  const value = { user, token, login, logout, loading, error };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
