@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import startServer from "./src/config/StartServer";
 import connectToDb from "./src/config/ConnectToDb";
+import { connectToNeo4j } from "./src/config/ConnectToNeo4j";
 import router from "./src/router";
 import errorMiddleware from "./middleware/error-middleware";
 
@@ -20,4 +21,5 @@ app.use("/", router);
 app.use(errorMiddleware);
 
 connectToDb();
+connectToNeo4j();
 startServer(app);
