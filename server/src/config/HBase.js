@@ -1,9 +1,11 @@
 const HBase = require("hbase");
+import dotenv from "dotenv";
+dotenv.config();
 
 const config = {
-  host: "localhost",
-  port: 16010,
-  timeout: 3000,
+  host: process.env.HBASE_HOST,
+  port: process.env.HBASE_PORT,
+  timeout: process.env.HBASE_TIMEOUT,
 };
 
 const hbaseClient = HBase.Client(config);
@@ -25,9 +27,9 @@ const tableSchema = {
 
 hbaseClient.createTable(tableSchema, (error) => {
   if (error) {
-    console.error("Помилка при створенні таблиці:", error);
+    console.error("Error while creating a table:", error);
   } else {
-    console.log("Таблицю створено або вже існує");
+    console.log("The table has been created or already exists");
   }
 });
 
@@ -57,9 +59,9 @@ async function addUserAction(
         browser_info: browser_info,
       },
     });
-    console.log("Дія користувача успішно додана до HBase");
+    console.log("User action has been added to HBase");
   } catch (error) {
-    console.error("Помилка при додаванні дії користувача до HBase:", error);
+    console.error("Error while adding user action to HBase:", error);
   }
 }
 
@@ -75,7 +77,7 @@ async function getUserActionsByTimeRange(startTimestamp, endTimestamp) {
     }
     return userActions;
   } catch (error) {
-    console.error("Помилка при отриманні дій користувачів з HBase:", error);
+    console.error("Error while getting user's actions from HBase:", error);
     return [];
   }
 }
