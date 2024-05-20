@@ -1,9 +1,11 @@
 import neo4j, { Driver } from "neo4j-driver";
+import dotenv from "dotenv";
+dotenv.config();
 
 const config = {
   uri: "neo4j+s://3e9024c9.databases.neo4j.io:7687",
-  user: "neo4j",
-  password: "AiseGUL5ZqWqBCSTBK1wdQyCge6oPGaK7CYeqAsCc8U",
+  user: process.env.Neo4j_USER as string,
+  password: process.env.Neo4j_PASSWORD as string,
 };
 
 let driver: Driver;
